@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# originales sin comprimir (no se publican)
+fotos-originales/
