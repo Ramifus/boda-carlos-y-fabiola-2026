@@ -1,0 +1,223 @@
+---
+// ContadorRegresivo.astro
+---
+
+<section class="relative w-full pt-1 pb-8 px-6 overflow-x-clip">
+
+    <!-- Hojas decorativas (copia de NombresFlores) detrás de toda la tarjeta, a la derecha -->
+    <div id="hojas-contador" class="absolute top-1/2 right-0 -translate-y-1/2 w-28 sm:w-36 md:w-44 z-0 pointer-events-none">
+        <img
+            src="/imagenes/hojas.png"
+            alt="Hojas decorativas"
+            class="w-full h-auto object-contain scale-x-[-1]"
+            style="opacity: 0.1;"
+        />
+    </div>
+
+    <div class="relative z-10 max-w-3xl mx-auto flex flex-col items-center text-center">
+
+        <!-- Línea superior elegante -->
+        <p id="contador-overline" class="font-serif font-light text-[#C9A961] text-xs sm:text-sm tracking-[0.4em] uppercase mb-2">
+            Para nuestro gran día
+        </p>
+
+        <!-- Divisor ornamental -->
+        <div id="contador-divisor" class="flex items-center gap-4 mb-6">
+            <span class="block w-10 sm:w-16 h-px bg-gradient-to-r from-transparent to-[#C9A961]/70"></span>
+            <span class="text-[#C9A961] text-sm leading-none">&#10070;</span>
+            <span class="block w-10 sm:w-16 h-px bg-gradient-to-l from-transparent to-[#C9A961]/70"></span>
+        </div>
+
+        <!-- Contenedor del contador -->
+        <div
+            id="contador-container"
+            class="relative z-10 w-full grid grid-cols-4 gap-0 border border-[#C9A961]/50 rounded-2xl px-2 sm:px-6 py-6 sm:py-7 bg-white shadow-[0_10px_40px_-15px_rgba(201,169,97,0.35)]"
+        >
+
+            <!-- DÍAS -->
+            <div id="dias-box" class="flex flex-col items-center justify-center px-1 sm:px-2">
+                <div class="font-serif font-light text-4xl sm:text-5xl md:text-6xl text-[#7A7A7A] leading-none mb-3" id="dias">
+                    00
+                </div>
+                <span class="text-[10px] sm:text-xs md:text-sm text-[#C9A961] uppercase tracking-[0.2em] font-serif">
+                    Días
+                </span>
+            </div>
+
+            <!-- HORAS -->
+            <div id="horas-box" class="flex flex-col items-center justify-center px-1 sm:px-2 border-l border-[#C9A961]/25">
+                <div class="font-serif font-light text-4xl sm:text-5xl md:text-6xl text-[#7A7A7A] leading-none mb-3" id="horas">
+                    00
+                </div>
+                <span class="text-[10px] sm:text-xs md:text-sm text-[#C9A961] uppercase tracking-[0.2em] font-serif">
+                    Horas
+                </span>
+            </div>
+
+            <!-- MINUTOS -->
+            <div id="minutos-box" class="flex flex-col items-center justify-center px-1 sm:px-2 border-l border-[#C9A961]/25">
+                <div class="font-serif font-light text-4xl sm:text-5xl md:text-6xl text-[#7A7A7A] leading-none mb-3" id="minutos">
+                    00
+                </div>
+                <span class="text-[10px] sm:text-xs md:text-sm text-[#C9A961] uppercase tracking-[0.2em] font-serif">
+                    Min.
+                </span>
+            </div>
+
+            <!-- SEGUNDOS -->
+            <div id="segundos-box" class="flex flex-col items-center justify-center px-1 sm:px-2 border-l border-[#C9A961]/25">
+                <div class="font-serif font-light text-4xl sm:text-5xl md:text-6xl text-[#7A7A7A] leading-none mb-3" id="segundos">
+                    00
+                </div>
+                <span class="text-[10px] sm:text-xs md:text-sm text-[#C9A961] uppercase tracking-[0.2em] font-serif">
+                    Seg.
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES Y CONTADOR CON GSAP                          -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("⏰ Iniciando contador regresivo...");
+
+        // Fecha objetivo: 28 de noviembre de 2026 a las 16:30 (Bolivia, -04:00)
+        const fechaObjetivo = new Date("2026-11-28T16:30:00-04:00").getTime();
+
+        // Elementos del DOM
+        const diasEl = document.getElementById("dias");
+        const horasEl = document.getElementById("horas");
+        const minutosEl = document.getElementById("minutos");
+        const segundosEl = document.getElementById("segundos");
+
+        // Función para actualizar el contador
+        function actualizarContador() {
+            const ahora = new Date().getTime();
+            const diferencia = fechaObjetivo - ahora;
+
+            if (diferencia <= 0) {
+                // Si ya pasó la fecha
+                diasEl.textContent = "00";
+                horasEl.textContent = "00";
+                minutosEl.textContent = "00";
+                segundosEl.textContent = "00";
+                return;
+            }
+
+            // Calcular tiempo restante
+            const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+            // Actualizar el DOM con formato de dos dígitos
+            diasEl.textContent = dias.toString().padStart(2, "0");
+            horasEl.textContent = horas.toString().padStart(2, "0");
+            minutosEl.textContent = minutos.toString().padStart(2, "0");
+            segundosEl.textContent = segundos.toString().padStart(2, "0");
+
+            // Animación en los segundos cada vez que cambian
+            gsap.fromTo(
+                segundosEl,
+                { scale: 1.2, color: "#C9A961" },
+                { scale: 1, color: "#7A7A7A", duration: 0.3, ease: "power2.out" }
+            );
+        }
+
+        // Actualizar cada segundo
+        actualizarContador();
+        setInterval(actualizarContador, 1000);
+
+        // ═══ ANIMACIÓN DE ENTRADA CON SCROLL ═══
+        gsap.fromTo(
+            "#contador-container",
+            { opacity: 0, scale: 0.8, y: 50 },
+            {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                duration: 1,
+                ease: "back.out(1.4)",
+                scrollTrigger: {
+                    trigger: "#contador-container",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+
+        // ═══ ANIMACIÓN DE CADA CAJA DE NÚMERO ═══
+        gsap.fromTo(
+            "#dias-box, #horas-box, #minutos-box, #segundos-box",
+            { opacity: 0, y: 20 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                stagger: 0.15,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#contador-container",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.5
+            }
+        );
+
+        // ═══ LÍNEA SUPERIOR Y DIVISOR ═══
+        gsap.fromTo(
+            "#contador-overline",
+            { opacity: 0, y: -20, letterSpacing: "0.7em" },
+            {
+                opacity: 1,
+                y: 0,
+                letterSpacing: "0.4em",
+                duration: 0.9,
+                ease: "power2.out",
+                scrollTrigger: { trigger: "#contador-overline", start: "top 85%", toggleActions: "play none none reverse" }
+            }
+        );
+
+        gsap.fromTo(
+            "#contador-divisor",
+            { opacity: 0, scaleX: 0.4 },
+            {
+                opacity: 1,
+                scaleX: 1,
+                duration: 0.8,
+                ease: "power2.out",
+                delay: 0.2,
+                scrollTrigger: { trigger: "#contador-overline", start: "top 85%", toggleActions: "play none none reverse" }
+            }
+        );
+
+        console.log("✨ Contador regresivo iniciado!");
+    });
+</script>
+
+<style>
+    /* Transiciones suaves */
+    #contador-container {
+        transition: all 0.3s ease;
+    }
+
+    /* Efecto hover en las cajas */
+    #dias-box:hover,
+    #horas-box:hover,
+    #minutos-box:hover,
+    #segundos-box:hover {
+        transform: translateY(-5px);
+    }
+</style>

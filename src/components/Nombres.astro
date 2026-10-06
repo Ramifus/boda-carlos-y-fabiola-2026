@@ -1,0 +1,233 @@
+---
+// ComponentePadres.astro
+---
+
+<section class="relative w-full py-12 px-6 overflow-x-clip">
+    
+    <!-- Imagen de hojas de fondo -->
+ <div class="absolute top-1/2 left-0 transform -translate-y-1/2 w-64 sm:w-80 md:w-96 z-0">
+        <img
+            src="/imagenes/hojas.png"
+            alt="Hojas decorativas"
+            class="w-40 h-auto object-contain"
+            style="opacity: 0.05;"
+        />
+    </div>
+
+    <div class="relative max-w-2xl mx-auto z-10 flex flex-col items-center">
+
+        <!-- Título principal -->
+        <div id="titulo-bendicion" class="text-center mb-3">
+            <p class="text-[#6B6B6B] text-sm sm:text-base md:text-lg font-serif tracking-[0.15em] leading-relaxed">
+                CON LA BENDICIÓN DE DIOS<br />
+                Y DE NUESTROS PADRES
+            </p>
+        </div>
+
+        <!-- Divisor ornamental -->
+        <div class="flex items-center justify-center gap-4 mb-10">
+            <span class="block w-12 sm:w-16 h-px bg-gradient-to-r from-transparent to-[#C9A961]/70"></span>
+            <span class="text-[#C9A961] text-sm leading-none">&#10070;</span>
+            <span class="block w-12 sm:w-16 h-px bg-gradient-to-l from-transparent to-[#C9A961]/70"></span>
+        </div>
+
+        <!-- PADRES DEL NOVIO -->
+        <div id="padres-novio" class="w-full mb-9">
+            <!-- Título "Padres del Novio" -->
+            <div class="text-center mb-3">
+                <h3 class="font-great-vibes text-4xl sm:text-5xl md:text-6xl text-[#C9A961] tracking-wide">
+                    Padres del Novio
+                </h3>
+            </div>
+
+            <!-- Nombres de los padres del novio -->
+            <div class="text-center space-y-2">
+                <p class="text-[#6B6B6B] text-sm sm:text-base md:text-lg font-serif tracking-[0.12em]">
+                    JUAN CARLOS ZEGARRA QUICHU
+                </p>
+                <p class="text-[#6B6B6B] text-sm sm:text-base md:text-lg font-serif tracking-[0.12em]">
+                    GUADALUPE ROMERO TORREZ
+                </p>
+            </div>
+        </div>
+
+        <!-- Separador pequeño entre familias -->
+        <div class="text-[#C9A961]/60 text-xs leading-none mb-9">&#10070;</div>
+
+        <!-- PADRES DE LA NOVIA -->
+        <div id="padres-novia" class="w-full">
+            <!-- Título "Padres de la Novia" -->
+            <div class="text-center mb-3">
+                <h3 class="font-great-vibes text-4xl sm:text-5xl md:text-6xl text-[#C9A961] tracking-wide">
+                    Padres de la Novia
+                </h3>
+            </div>
+
+            <!-- Nombres de los padres de la novia -->
+            <div class="text-center space-y-2">
+                <p class="text-[#6B6B6B] text-sm sm:text-base md:text-lg font-serif tracking-[0.12em]">
+                    OMAR TALAVERA VACA
+                </p>
+                <p class="text-[#6B6B6B] text-sm sm:text-base md:text-lg font-serif tracking-[0.12em]">
+                    MARTHA YENNY USLAR APARICIO
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("🎊 Iniciando animaciones de padres...");
+
+        // ═══ TÍTULO "CON LA BENDICIÓN DE DIOS" ═══
+        gsap.fromTo(
+            "#titulo-bendicion",
+            { opacity: 0, y: -30 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#titulo-bendicion",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+
+        // ═══ PADRES DEL NOVIO ═══
+        gsap.fromTo(
+            "#padres-novio h3",
+            { opacity: 0, scale: 0.8 },
+            {
+                opacity: 1,
+                scale: 1,
+                duration: 0.8,
+                ease: "back.out(1.4)",
+                scrollTrigger: {
+                    trigger: "#padres-novio",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.3
+            }
+        );
+
+        gsap.fromTo(
+            "#padres-novio .space-y-2 p",
+            { opacity: 0, x: -30 },
+            {
+                opacity: 1,
+                x: 0,
+                duration: 0.6,
+                stagger: 0.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#padres-novio",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.6
+            }
+        );
+
+        // ═══ PADRES DE LA NOVIA ═══
+        gsap.fromTo(
+            "#padres-novia h3",
+            { opacity: 0, scale: 0.8 },
+            {
+                opacity: 1,
+                scale: 1,
+                duration: 0.8,
+                ease: "back.out(1.4)",
+                scrollTrigger: {
+                    trigger: "#padres-novia",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.3
+            }
+        );
+
+        gsap.fromTo(
+            "#padres-novia .space-y-2 p",
+            { opacity: 0, x: 30 },
+            {
+                opacity: 1,
+                x: 0,
+                duration: 0.6,
+                stagger: 0.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#padres-novia",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.6
+            }
+        );
+
+        // ═══ PADRINOS ═══
+        gsap.fromTo(
+            "#padrinos h3",
+            { opacity: 0, scale: 0.8 },
+            {
+                opacity: 1,
+                scale: 1,
+                duration: 0.8,
+                ease: "back.out(1.4)",
+                scrollTrigger: {
+                    trigger: "#padrinos",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.3
+            }
+        );
+
+        gsap.fromTo(
+            "#padrinos .space-y-2 p",
+            { opacity: 0, y: 20 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                stagger: 0.2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#padrinos",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.6
+            }
+        );
+
+        console.log("✨ Animaciones de padres completadas!");
+    });
+</script>
+
+<style>
+    /* Transiciones suaves */
+    section h3:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+    }
+
+    section p:hover {
+        color: #C9A961;
+        transition: color 0.3s ease;
+    }
+</style>

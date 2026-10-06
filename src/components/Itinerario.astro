@@ -1,0 +1,126 @@
+---
+// ComponenteItinerario.astro
+// Tarjeta tipo "programa": ícono fino, evento, línea punteada y hora.
+const eventos = [
+    {
+        hora: "16:30",
+        nombre: "Ceremonia",
+        // Anillos
+        icono: `<circle cx="9" cy="14.5" r="5"/><circle cx="15" cy="14.5" r="5"/><path d="M10.5 5.5 12 3l1.5 2.5L12 7z"/>`,
+    },
+    {
+        hora: "19:00",
+        nombre: "Brindis",
+        // Copas
+        icono: `<path d="M5 3h4l-.4 5.5a1.6 1.6 0 0 1-3.2 0z"/><path d="M7 10v8M5 18h4"/><path d="M15 3h4l-.4 5.5a1.6 1.6 0 0 1-3.2 0z"/><path d="M17 10v8M15 18h4"/>`,
+    },
+    {
+        hora: "20:00",
+        nombre: "Cena",
+        // Tenedor y cuchillo
+        icono: `<path d="M6 3v6a2 2 0 0 0 2 2v10"/><path d="M10 3v6a2 2 0 0 1-2 2"/><path d="M8 3v5"/><path d="M18 3c-2 2-2.5 5.5-2.5 9H18v9"/>`,
+    },
+    {
+        hora: "01:00",
+        nombre: "Despedida",
+        // Luna y estrella
+        icono: `<path d="M19.5 14.5A7.5 7.5 0 1 1 9.5 4.5a6 6 0 0 0 10 10z"/><path d="M17 3l.6 1.4L19 5l-1.4.6L17 7l-.6-1.4L15 5l1.4-.6z"/>`,
+    },
+];
+---
+
+<section class="relative w-full py-8 px-6">
+
+    <div class="max-w-md mx-auto">
+
+        <!-- Tarjeta con borde redondeado (mismo estilo que Recepción) -->
+        <div
+            id="itinerario-card"
+            class="relative border border-[#C9A961]/60 rounded-3xl px-7 py-9 sm:px-10 sm:py-10 bg-white shadow-lg overflow-hidden"
+        >
+
+            <!-- Borde interior fino -->
+            <span class="pointer-events-none absolute inset-3 sm:inset-4 border border-[#C9A961]/25 rounded-2xl"></span>
+
+            <div class="relative">
+
+                <!-- Título "Itinerario" -->
+                <div id="titulo-itinerario" class="text-center mb-2">
+                    <h3 class="font-great-vibes text-4xl sm:text-5xl md:text-6xl text-[#C9A961]">
+                        Itinerario
+                    </h3>
+                </div>
+
+                <!-- Divisor ornamental -->
+                <div id="divisor-itinerario" class="flex items-center justify-center gap-3 mb-5">
+                    <span class="block w-10 sm:w-14 h-px bg-gradient-to-r from-transparent to-[#C9A961]/70"></span>
+                    <span class="text-[#C9A961] text-sm leading-none">&#10070;</span>
+                    <span class="block w-10 sm:w-14 h-px bg-gradient-to-l from-transparent to-[#C9A961]/70"></span>
+                </div>
+
+                <!-- Programa -->
+                <ul class="divide-y divide-[#C9A961]/20">
+                    {eventos.map((ev, i) => (
+                        <li id={`evento-${i + 1}`} class="evento-it flex items-center gap-3 py-3.5">
+                            <svg
+                                class="w-6 h-6 shrink-0 text-[#6B7154]"
+                                fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                                set:html={ev.icono}
+                            />
+                            <span class="font-serif text-sm sm:text-base text-[#6B6B6B] uppercase tracking-[0.15em]">{ev.nombre}</span>
+                            <span class="flex-1 border-b border-dotted border-[#C9A961]/50 translate-y-1"></span>
+                            <span class="font-serif text-xl sm:text-2xl font-semibold text-[#C9A961] tabular-nums">{ev.hora}</span>
+                        </li>
+                    ))}
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const st = { trigger: "#itinerario-card", start: "top 85%", once: true };
+
+        // ═══ TARJETA ═══
+        gsap.fromTo(
+            "#itinerario-card",
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", scrollTrigger: st }
+        );
+
+        // ═══ TÍTULO Y DIVISOR ═══
+        gsap.fromTo(
+            "#titulo-itinerario",
+            { opacity: 0, y: -15 },
+            { opacity: 1, y: 0, duration: 0.7, ease: "power2.out", delay: 0.2, scrollTrigger: st }
+        );
+
+        gsap.fromTo(
+            "#divisor-itinerario",
+            { opacity: 0, scaleX: 0.4 },
+            { opacity: 1, scaleX: 1, duration: 0.8, ease: "power2.out", delay: 0.3, scrollTrigger: st }
+        );
+
+        // ═══ EVENTOS - aparecen uno tras otro ═══
+        gsap.fromTo(
+            ".evento-it",
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", stagger: 0.15, delay: 0.5, scrollTrigger: st }
+        );
+    });
+</script>

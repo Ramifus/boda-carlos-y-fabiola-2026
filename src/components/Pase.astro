@@ -1,0 +1,268 @@
+---
+// ComponentePase.astro
+---
+
+<section class="relative w-full py-2">
+    
+    <div class="max-w-2xl mx-auto">
+        
+        <!-- Contenedor principal con fondo verde oliva -->
+        <div 
+            id="pase-container"
+            class="bg-[#6B7154] rounded-lg p-8 sm:p-10 md:p-12 text-center shadow-2xl"
+        >
+            
+            <!-- Texto superior -->
+            <div id="texto-superior" >
+                <!-- <p class="text-white text-sm sm:text-base md:text-lg leading-relaxed font-serif">
+                    CASARSE ES DE LOCOS, PERO ES QUE NOS QUEREMOS CON<br />
+                    LOCURA. POR ESO LO VAMOS A CELEBRAR CON UNA<br />
+                    FIESTA Y QUEREMOS QUE PARTICIPES CON
+                </p> -->
+
+             <p class="text-white text-sm sm:text-base md:text-lg leading-relaxed font-serif text-center">
+    ASÍ QUE NO SON YA MÁS DOS, SINO UNA SOLA CARNE;<br />
+    POR TANTO, LO QUE DIOS JUNTÓ, QUE NO LO SEPARE EL HOMBRE.<br />
+    <span class="italic mt-2 block">MATEO 19:6</span>
+</p>
+            </div>
+
+            <!-- Nombre del invitado -->
+            <!-- <div id="nombre-invitado" class="mb-8">
+                <h2 class="font-great-vibes text-5xl sm:text-6xl md:text-7xl text-white tracking-wide">
+                    Daniel Maldonado
+                </h2>
+            </div> -->
+
+            <!-- Línea decorativa -->
+            <!-- <div id="linea-decorativa" class="w-3/4 mx-auto border-t-2 border-[#C9A961] my-8"></div> -->
+
+            <!-- Texto "HEMOS RESERVADO:" -->
+            <!-- <div id="texto-reservado" class="mb-4">
+                <p class="text-white text-xs sm:text-sm md:text-base uppercase tracking-widest font-serif">
+                    HEMOS RESERVADO:
+                </p>
+            </div> -->
+
+            <!-- Número de pases -->
+            <!-- <div id="numero-pase" class="mb-4">
+                <span class="text-[#C9A961] text-7xl sm:text-8xl md:text-9xl font-bold font-serif">
+                    1
+                </span>
+            </div> -->
+
+            <!-- Texto "PASE(S)" -->
+            <!-- <div id="texto-pase" class="mb-2">
+                <p class="text-[#C9A961] text-base sm:text-lg md:text-xl uppercase tracking-wider font-serif">
+                    PASE (S)
+                </p>
+            </div> -->
+
+            <!-- Texto "EN SU HONOR" -->
+            <!-- <div id="texto-honor">
+                <p class="text-[#C9A961] text-base sm:text-lg md:text-xl uppercase tracking-wider font-serif">
+                    EN SU HONOR
+                </p>
+            </div> -->
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("🎊 Iniciando animaciones de pase...");
+
+        // ═══ CONTENEDOR PRINCIPAL ═══
+        gsap.fromTo(
+            "#pase-container",
+            { opacity: 0, scale: 0.9, y: 50 },
+            {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                duration: 1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    once: true
+                }
+            }
+        );
+
+        // ═══ TEXTO SUPERIOR ═══
+        gsap.fromTo(
+            "#texto-superior",
+            { opacity: 0, y: -20 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    once: true
+                },
+                delay: 0.3
+            }
+        );
+
+        // ═══ NOMBRE DEL INVITADO - Letra por letra ═══
+        const textoNombre = "Daniel Maldonado";
+        const contenedorNombre = document.getElementById("nombre-invitado").querySelector("h2");
+        if (contenedorNombre) {
+            contenedorNombre.innerHTML = textoNombre
+                .split("")
+                .map(
+                    (letra, index) =>
+                        `<span class="letra-invitado" style="
+                            opacity: 0; 
+                            display: inline-block; 
+                            transform: translateY(20px) scale(0.8);
+                            filter: blur(3px);
+                        ">${letra === " " ? "&nbsp;" : letra}</span>`
+                )
+                .join("");
+
+            gsap.to("#nombre-invitado .letra-invitado", {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                filter: "blur(0px)",
+                duration: 0.5,
+                ease: "power2.out",
+                stagger: { each: 0.04, from: "start" },
+                delay: 0.6
+            });
+        }
+
+        // ═══ LÍNEA DECORATIVA ═══
+        gsap.fromTo(
+            "#linea-decorativa",
+            { scaleX: 0 },
+            {
+                scaleX: 1,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    once: true
+                },
+                delay: 1.2
+            }
+        );
+
+        // ═══ TEXTO "HEMOS RESERVADO:" ═══
+        gsap.fromTo(
+            "#texto-reservado",
+            { opacity: 0, y: 20 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    once: true
+                },
+                delay: 1.5
+            }
+        );
+
+        // ═══ NÚMERO DE PASE ═══
+        gsap.fromTo(
+            "#numero-pase",
+            { opacity: 0, scale: 0.3, rotation: -15 },
+            {
+                opacity: 1,
+                scale: 1,
+                rotation: 0,
+                duration: 1,
+                ease: "back.out(2)",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    once: true
+                },
+                delay: 1.8
+            }
+        );
+
+        // ═══ TEXTO "PASE(S)" ═══
+        gsap.fromTo(
+            "#texto-pase",
+            { opacity: 0, y: 10 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    once: true
+                },
+                delay: 2.2
+            }
+        );
+
+        // ═══ TEXTO "EN SU HONOR" ═══
+        gsap.fromTo(
+            "#texto-honor",
+            { opacity: 0, y: 10 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    once: true
+                },
+                delay: 2.4
+            }
+        );
+
+        console.log("✨ Animaciones de pase completadas!");
+    });
+</script>
+
+<style>
+    /* Efecto hover en letras del nombre */
+    .letra-invitado {
+        transition: all 0.3s ease;
+        will-change: transform, opacity, filter;
+        position: relative;
+    }
+
+    .letra-invitado:hover {
+        transform: translateY(-3px) scale(1.1) !important;
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.5) !important;
+    }
+
+    /* Transiciones suaves */
+    #pase-container {
+        transition: all 0.3s ease;
+    }
+
+    /* Efecto hover en el número */
+    #numero-pase:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+    }
+</style>

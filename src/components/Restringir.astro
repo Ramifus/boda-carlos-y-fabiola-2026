@@ -1,0 +1,136 @@
+---
+// ComponenteSoloAdultos.astro
+---
+
+<section class="relative w-full py-8 px-6">
+    
+    <!-- Hojas decorativas en el fondo izquierdo -->
+    <div id="restringir-hojas" class="absolute top-1/3 left-0 transform -translate-y-1/2 w-32 sm:w-40 md:w-48 z-0">
+        <img
+            src="/imagenes/hojas.png"
+            alt="Hojas decorativas"
+            class="w-full h-auto object-contain"
+            style="opacity: 0.1;"
+        />
+    </div>
+
+    <div class="relative max-w-2xl mx-auto text-center z-10">
+        
+        <!-- Icono de prohibido niños -->
+        <div id="icono-adultos" class="mb-8 flex justify-center">
+            <div class="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32">
+                <img
+                    src="/imagenes/no.png"
+                    alt="Solo adultos"
+                    class="w-full h-full object-contain"
+                    
+                />
+            </div>
+        </div>
+
+        <!-- Texto explicativo -->
+        <div id="texto-adultos">
+    <p class="text-[#6B6B6B] text-sm sm:text-base md:text-lg font-serif leading-relaxed">
+        NUESTRA CELEBRACIÓN SERÁ NOCTURNA Y AL AIRE LIBRE;<br />
+        POR LO MISMO, HEMOS DECIDIDO QUE SEA SOLO PARA ADULTOS.<br />
+        LOS ESPERAMOS EN NUESTRA GRAN NOCHE.
+    </p>
+</div>
+
+
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("🚫 Iniciando animaciones de solo adultos...");
+
+        // ═══ HOJAS DECORATIVAS ═══
+        gsap.fromTo(
+            "#restringir-hojas",
+            { x: -50 },
+            {
+                x: 0,
+                duration: 1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "section",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+
+        // ═══ ICONO DE PROHIBIDO ═══
+        gsap.fromTo(
+            "#icono-adultos",
+            { opacity: 0, scale: 0.3, rotation: -20 },
+            {
+                opacity: 1,
+                scale: 1,
+                rotation: 0,
+                duration: 1,
+                ease: "back.out(1.7)",
+                scrollTrigger: {
+                    trigger: "#icono-adultos",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.3
+            }
+        );
+
+        // ═══ TEXTO EXPLICATIVO ═══
+        gsap.fromTo(
+            "#texto-adultos",
+            { opacity: 0, y: 30 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#texto-adultos",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.6
+            }
+        );
+
+        // ═══ ANIMACIÓN DE PULSO SUTIL EN EL ICONO ═══
+        // gsap.to("#icono-adultos", {
+        //     scale: 1.05,
+        //     duration: 2,
+        //     ease: "sine.inOut",
+        //     yoyo: true,
+        //     repeat: -1,
+        //     delay: 2
+        // });
+
+        console.log("✨ Animaciones de solo adultos completadas!");
+    });
+</script>
+
+<style>
+    /* Efecto hover en el icono */
+    #icono-adultos:hover {
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+
+    /* Transiciones suaves */
+    #texto-adultos:hover {
+        transform: scale(1.02);
+        transition: transform 0.3s ease;
+    }
+</style>

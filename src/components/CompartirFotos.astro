@@ -1,0 +1,175 @@
+---
+// ComponenteCompartirFotos.astro
+---
+
+<section class="relative w-full py-16 px-6">
+    
+    <div class="max-w-md mx-auto">
+        
+        <!-- Tarjeta con borde redondeado -->
+        <div 
+            id="fotos-card"
+            class="border-2 border-[#C9A961] rounded-3xl p-8 sm:p-10 bg-white shadow-lg text-center"
+        >
+            
+            <!-- Icono de cámara -->
+            <div id="icono-camara" class="mb-6 flex justify-center">
+                <div class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
+                    <img
+                        src="/imagenes/camara.png"
+                        alt="Cámara"
+                        class="w-full h-full object-contain"
+                        style="filter: brightness(0) saturate(100%) invert(43%) sepia(8%) saturate(1044%) hue-rotate(49deg) brightness(96%) contrast(88%);"
+                    />
+                </div>
+            </div>
+
+            <!-- Texto explicativo -->
+            <div id="texto-fotos" class="mb-8">
+                <p class="text-[#6B6B6B] text-sm sm:text-base md:text-lg font-serif leading-relaxed">
+                    TE INVITAMOS A COMPARTIR<br />
+                    LOS MOMENTOS MÁS ESPECIALES<br />
+                    DE NUESTRO EVENTO A TRAVÉS<br />
+                    DE TUS FOTOGRAFÍAS
+                </p>
+            </div>
+
+            <!-- Botón "COMPARTIR FOTOS" -->
+            <div id="boton-fotos">
+                <a
+                    href="https://files.fm/u/xyqqkjs3ncqhvehp"
+                    target="_blank"
+                    class="inline-block bg-[#6B7154] text-white px-8 py-3 rounded-lg text-sm sm:text-base font-serif uppercase tracking-wider hover:bg-[#5a5e45] transition-all duration-300 shadow-md hover:shadow-lg"
+                >
+                    COMPARTIR FOTOS
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("📷 Iniciando animaciones de compartir fotos...");
+
+        // ═══ TARJETA PRINCIPAL ═══
+        gsap.fromTo(
+            "#fotos-card",
+            { opacity: 0, scale: 0.8, y: 50 },
+            {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                duration: 1,
+                ease: "back.out(1.4)",
+                scrollTrigger: {
+                    trigger: "#fotos-card",
+                    start: "top 80%",
+                    once: true
+                }
+            }
+        );
+
+        // ═══ ICONO DE CÁMARA ═══
+        gsap.fromTo(
+            "#icono-camara",
+            { opacity: 0, scale: 0.5, rotation: -15 },
+            {
+                opacity: 1,
+                scale: 1,
+                rotation: 0,
+                duration: 0.8,
+                ease: "back.out(1.7)",
+                scrollTrigger: {
+                    trigger: "#fotos-card",
+                    start: "top 80%",
+                    once: true
+                },
+                delay: 0.3
+            }
+        );
+
+        // ═══ TEXTO EXPLICATIVO ═══
+        gsap.fromTo(
+            "#texto-fotos",
+            { opacity: 0, y: 20 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#fotos-card",
+                    start: "top 80%",
+                    once: true
+                },
+                delay: 0.6
+            }
+        );
+
+        // ═══ BOTÓN "COMPARTIR FOTOS" ═══
+        gsap.fromTo(
+            "#boton-fotos",
+            { opacity: 0, y: 20 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#fotos-card",
+                    start: "top 80%",
+                    once: true
+                },
+                delay: 0.9
+            }
+        );
+
+        // ═══ ANIMACIÓN DE FLASH EN LA CÁMARA ═══
+        // gsap.to("#icono-camara", {
+        //     scale: 1.1,
+        //     duration: 0.3,
+        //     ease: "power2.inOut",
+        //     yoyo: true,
+        //     repeat: -1,
+        //     repeatDelay: 3,
+        //     delay: 2
+        // });
+
+        console.log("✨ Animaciones de compartir fotos completadas!");
+    });
+</script>
+
+<style>
+    /* Transiciones suaves en la tarjeta */
+    #fotos-card {
+        transition: all 0.3s ease;
+    }
+
+    #fotos-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Efecto hover en el icono */
+    #icono-camara:hover {
+        transform: scale(1.1) rotate(5deg);
+        transition: transform 0.3s ease;
+    }
+
+    /* Animación del botón */
+    #boton-fotos a:active {
+        transform: scale(0.95);
+    }
+</style>

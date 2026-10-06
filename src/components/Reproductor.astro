@@ -1,0 +1,155 @@
+---
+// Reproductor.astro
+---
+
+<!-- Reproductor de música FIJO - OCULTO INICIALMENTE -->
+<div id="reproductor-fijo" class="hidden fixed top-4 right-4 z-40">
+    
+    <!-- Reproductor de música circular con glassmorphism -->
+    <div id="reproductor-container" class="relative">
+        
+        <!-- Círculo del reproductor con efecto blur -->
+        <button 
+            id="btn-reproducir"
+            class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full backdrop-blur-md bg-gradient-to-br from-[#C9A961]/30 to-[#6B7154]/30 shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-105 border-2 border-white/40 hover:border-[#C9A961]/60"
+            title="Reproducir música"
+        >
+            <!-- Ícono de Play (visible inicialmente) -->
+            <svg 
+                id="icono-play" 
+                class="w-6 h-6 sm:w-8 sm:h-8 text-white drop-shadow-lg transition-all duration-300"
+                fill="currentColor" 
+                viewBox="0 0 24 24"
+            >
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+            
+            <!-- Ícono de Pause (oculto inicialmente) -->
+            <svg 
+                id="icono-pause" 
+                class="hidden w-6 h-6 sm:w-8 sm:h-8 text-white drop-shadow-lg transition-all duration-300"
+                fill="currentColor" 
+                viewBox="0 0 24 24"
+            >
+                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+            </svg>
+        </button>
+        
+        <!-- Ondas de sonido animadas (cuando está reproduciendo) -->
+        <div id="ondas-sonido" class="hidden absolute inset-0 pointer-events-none">
+            <div class="absolute inset-0 rounded-full border-2 border-[#C9A961]/50 opacity-75 animate-ping"></div>
+            <div class="absolute inset-0 rounded-full border-2 border-white/30 opacity-50 animate-ping" style="animation-delay: 0.5s;"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Audio element (oculto) -->
+<audio id="audio-player" preload="auto" loop>
+    <source src="/audio/melodia.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+</audio>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎵 FUNCIONALIDAD DEL REPRODUCTOR                            -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("🎵 Reproductor de música iniciado");
+
+        const reproductorFijo = document.getElementById("reproductor-fijo");
+        
+        // Observar cuando se cierra la portada
+        const observer = new MutationObserver((mutations) => {
+            const portada = document.getElementById("portada-bienvenida");
+            
+            // Si la portada ya no existe, mostrar el reproductor
+            if (!portada && reproductorFijo) {
+                reproductorFijo.classList.remove("hidden");
+                console.log("✅ Reproductor visible");
+                observer.disconnect(); // Dejar de observar
+            }
+        });
+
+        // Observar cambios en el body
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+
+        // ═══ FUNCIONALIDAD DEL REPRODUCTOR ═══
+        const audio = document.getElementById("audio-player");
+        const btnReproducir = document.getElementById("btn-reproducir");
+        const iconoPlay = document.getElementById("icono-play");
+        const iconoPause = document.getElementById("icono-pause");
+        const ondasSonido = document.getElementById("ondas-sonido");
+
+        let estaReproduciendo = false;
+
+        btnReproducir?.addEventListener("click", () => {
+            if (!estaReproduciendo) {
+                // Reproducir música
+                audio?.play();
+                estaReproduciendo = true;
+                
+                // Cambiar iconos
+                iconoPlay?.classList.add("hidden");
+                iconoPause?.classList.remove("hidden");
+                
+                // Mostrar ondas de sonido
+                ondasSonido?.classList.remove("hidden");
+                
+            } else {
+                // Pausar música
+                audio?.pause();
+                estaReproduciendo = false;
+                
+                // Cambiar iconos
+                iconoPlay?.classList.remove("hidden");
+                iconoPause?.classList.add("hidden");
+                
+                // Ocultar ondas de sonido
+                ondasSonido?.classList.add("hidden");
+            }
+        });
+
+        // Reiniciar cuando termine la canción
+        audio?.addEventListener("ended", () => {
+            estaReproduciendo = false;
+            iconoPlay?.classList.remove("hidden");
+            iconoPause?.classList.add("hidden");
+            ondasSonido?.classList.add("hidden");
+        });
+    });
+</script>
+
+<style>
+    /* Efecto de brillo sutil al hacer hover */
+    #btn-reproducir:hover {
+        box-shadow: 0 0 25px rgba(201, 169, 97, 0.4);
+    }
+
+    /* Ondas animadas */
+    @keyframes ping {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        75%, 100% {
+            transform: scale(2.5);
+            opacity: 0;
+        }
+    }
+
+    .animate-ping {
+        animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    /* Responsivo */
+    @media (max-width: 640px) {
+        #reproductor-fijo {
+            top: 0.75rem;
+            right: 0.75rem;
+        }
+    }
+</style>

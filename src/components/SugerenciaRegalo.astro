@@ -1,0 +1,207 @@
+---
+// ComponenteSugerenciaRegalo.astro
+// Ícono de regalo, mensaje, QR y datos de la cuenta.
+const titular = "Juan Carlos Zegarra Romero";
+const numeroCuenta = "1002840053";
+const concepto = "Regalo";
+---
+
+<section class="relative w-full py-8 px-6">
+
+    <div class="max-w-md mx-auto">
+
+        <!-- Tarjeta con borde redondeado (mismo estilo que Recepción e Itinerario) -->
+        <div
+            id="regalo-card"
+            class="relative border border-[#C9A961]/60 rounded-3xl px-7 py-9 sm:px-10 sm:py-10 bg-white shadow-lg text-center overflow-hidden"
+        >
+
+            <!-- Borde interior fino -->
+            <span class="pointer-events-none absolute inset-3 sm:inset-4 border border-[#C9A961]/25 rounded-2xl"></span>
+
+            <div class="relative flex flex-col items-center">
+
+                <!-- Ícono de regalo -->
+                <div id="regalo-icono" class="w-16 h-16 rounded-full border border-[#C9A961]/50 flex items-center justify-center mb-3">
+                    <svg
+                        class="w-8 h-8 text-[#6B7154]"
+                        fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <rect x="3.5" y="8" width="17" height="4" rx="0.8"/>
+                        <path d="M5 12v8.2a.8.8 0 0 0 .8.8h12.4a.8.8 0 0 0 .8-.8V12"/>
+                        <path d="M12 8v13"/>
+                        <path d="M12 8c-1.2-2.6-3.2-4.2-4.8-3.6-1.3.5-1.2 2.3.3 3 .9.4 2.6.6 4.5.6z"/>
+                        <path d="M12 8c1.2-2.6 3.2-4.2 4.8-3.6 1.3.5 1.2 2.3-.3 3-.9.4-2.6.6-4.5.6z"/>
+                    </svg>
+                </div>
+
+                <!-- Título -->
+                <h3 id="titulo-regalo" class="font-great-vibes text-4xl sm:text-5xl md:text-6xl text-[#C9A961] leading-tight">
+                    Sugerencia de Regalo
+                </h3>
+
+                <!-- Divisor ornamental -->
+                <div id="divisor-regalo" class="flex items-center justify-center gap-3 mt-2 mb-5">
+                    <span class="block w-10 sm:w-14 h-px bg-gradient-to-r from-transparent to-[#C9A961]/70"></span>
+                    <span class="text-[#C9A961] text-sm leading-none">&#10070;</span>
+                    <span class="block w-10 sm:w-14 h-px bg-gradient-to-l from-transparent to-[#C9A961]/70"></span>
+                </div>
+
+                <!-- Mensaje -->
+                <div id="texto-regalo" class="mb-6">
+                    <p class="font-great-vibes text-2xl sm:text-3xl text-[#6B7154] leading-snug mb-2">
+                        Tu presencia es nuestro mejor regalo
+                    </p>
+                    <p class="font-serif text-[#6B6B6B] text-sm sm:text-base leading-relaxed">
+                        Pero si deseas tener un detalle con nosotros,<br class="hidden sm:inline" />
+                        puedes hacerlo a través del siguiente código QR.
+                    </p>
+                </div>
+
+                <!-- QR con esquinas doradas -->
+                <div id="regalo-qr" class="relative p-3 mb-4">
+                    <span class="pointer-events-none absolute top-0 left-0 w-6 h-6 border-t border-l border-[#C9A961]"></span>
+                    <span class="pointer-events-none absolute top-0 right-0 w-6 h-6 border-t border-r border-[#C9A961]"></span>
+                    <span class="pointer-events-none absolute bottom-0 left-0 w-6 h-6 border-b border-l border-[#C9A961]"></span>
+                    <span class="pointer-events-none absolute bottom-0 right-0 w-6 h-6 border-b border-r border-[#C9A961]"></span>
+                    <img
+                        src="/imagenes/qr.png"
+                        alt="Código QR para el regalo"
+                        width="720"
+                        height="720"
+                        loading="lazy"
+                        class="w-48 h-48 sm:w-56 sm:h-56 object-contain bg-white"
+                    />
+                </div>
+
+                <!-- Guardar QR (en el celular no se puede escanear la propia pantalla) -->
+                <a
+                    id="regalo-descargar"
+                    href="/imagenes/qr.png"
+                    download="QR-regalo-Carlos-y-Fabiola.png"
+                    class="group relative inline-flex items-center gap-2 px-7 py-2.5 mb-7 bg-[#8b9677] hover:bg-[#7a8566] text-white font-serif text-xs sm:text-sm uppercase tracking-[0.25em] rounded-md shadow-md transition-all duration-300"
+                >
+                    <span class="pointer-events-none absolute inset-1 rounded-[3px] border border-white/40"></span>
+                    <svg class="relative w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>
+                    </svg>
+                    <span class="relative">Guardar QR</span>
+                </a>
+
+                <!-- Datos de la cuenta -->
+                <div id="regalo-datos" class="w-full space-y-4">
+                    <p class="font-serif text-[#4a4a4a] text-base sm:text-lg uppercase tracking-[0.12em] leading-snug">
+                        {titular}
+                    </p>
+
+                    <div class="h-px w-16 mx-auto bg-[#C9A961]/40"></div>
+
+                    <div>
+                        <p class="font-serif text-[#C9A961] text-xs uppercase tracking-[0.3em] mb-1">Número de cuenta</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <p id="regalo-numero" class="font-serif text-[#6B6B6B] text-lg sm:text-xl tracking-[0.12em] tabular-nums">{numeroCuenta}</p>
+                            <button
+                                id="regalo-copiar"
+                                type="button"
+                                class="w-8 h-8 rounded-full border border-[#C9A961]/50 text-[#6B7154] flex items-center justify-center transition-colors duration-300 hover:bg-[#6B7154] hover:text-white"
+                                aria-label="Copiar número de cuenta"
+                                title="Copiar número de cuenta"
+                            >
+                                <svg id="icono-copiar" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                                    <rect x="9" y="9" width="11" height="11" rx="2"/>
+                                    <path d="M5 15V6a2 2 0 0 1 2-2h8"/>
+                                </svg>
+                                <svg id="icono-copiado" class="hidden w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M5 12.5l4.5 4.5L19 7"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <p id="regalo-aviso" class="font-serif text-[#6B7154] text-xs tracking-wider h-4 mt-1 opacity-0 transition-opacity duration-300">Copiado</p>
+                    </div>
+
+                    <div>
+                        <p class="font-serif text-[#C9A961] text-xs uppercase tracking-[0.3em] mb-1">Concepto</p>
+                        <p class="font-serif text-[#6B6B6B] text-lg sm:text-xl">{concepto}</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        // ═══ COPIAR NÚMERO DE CUENTA ═══
+        const btnCopiar = document.getElementById("regalo-copiar");
+        const numero = document.getElementById("regalo-numero")?.textContent?.trim() ?? "";
+        const iconoCopiar = document.getElementById("icono-copiar");
+        const iconoCopiado = document.getElementById("icono-copiado");
+        const aviso = document.getElementById("regalo-aviso");
+
+        btnCopiar?.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(numero);
+            } catch {
+                // Navegadores sin portapapeles: copia a la antigua
+                const campo = document.createElement("textarea");
+                campo.value = numero;
+                document.body.appendChild(campo);
+                campo.select();
+                document.execCommand("copy");
+                campo.remove();
+            }
+            iconoCopiar?.classList.add("hidden");
+            iconoCopiado?.classList.remove("hidden");
+            aviso?.classList.remove("opacity-0");
+            setTimeout(() => {
+                iconoCopiar?.classList.remove("hidden");
+                iconoCopiado?.classList.add("hidden");
+                aviso?.classList.add("opacity-0");
+            }, 2000);
+        });
+
+        // ═══ ENTRADA ═══
+        const tl = gsap.timeline({
+            scrollTrigger: { trigger: "#regalo-card", start: "top 85%", once: true }
+        });
+
+        tl.fromTo("#regalo-card", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" })
+          .fromTo("#regalo-icono", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2)" }, "-=0.4")
+          .fromTo("#titulo-regalo", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, "-=0.3")
+          .fromTo("#divisor-regalo", { opacity: 0, scaleX: 0.4 }, { opacity: 1, scaleX: 1, duration: 0.6, ease: "power2.out" }, "-=0.3")
+          .fromTo("#texto-regalo", { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, "-=0.3");
+
+        gsap.fromTo(
+            "#regalo-qr",
+            { opacity: 0, scale: 0.9, filter: "blur(4px)" },
+            {
+                opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.9, ease: "power3.out",
+                scrollTrigger: { trigger: "#regalo-qr", start: "top 88%", once: true },
+                onComplete: () => gsap.set("#regalo-qr", { clearProps: "filter" })
+            }
+        );
+
+        gsap.fromTo(
+            ["#regalo-descargar", "#regalo-datos"],
+            { opacity: 0, y: 15 },
+            {
+                opacity: 1, y: 0, duration: 0.7, ease: "power2.out", stagger: 0.15,
+                scrollTrigger: { trigger: "#regalo-descargar", start: "top 92%", once: true }
+            }
+        );
+    });
+</script>

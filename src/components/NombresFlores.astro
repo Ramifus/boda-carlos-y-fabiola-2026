@@ -1,0 +1,368 @@
+---
+// NombresFlores.astro (ComponenteInvitacion.astro)
+---
+
+<section id="nombresflores" class="relative w-full overflow-hidden">
+    
+    <!-- REPRODUCTOR DE MÚSICA - Fijo abajo a la derecha -->
+    <div id="reproductor-fijo" class="fixed bottom-5 right-5 z-40">
+        <button
+            id="btn-reproducir"
+            class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#6B7154] shadow-lg shadow-[#6B7154]/40 flex items-center justify-center border-2 border-white/80"
+            title="Reproducir/Pausar música"
+            aria-label="Reproducir o pausar música"
+        >
+            <!-- Nota tachada: música en pausa -->
+            <svg
+                id="icono-play"
+                class="hidden w-6 h-6 sm:w-7 sm:h-7 text-white"
+                fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                viewBox="0 0 24 24"
+            >
+                <path d="M9 18V5l11-2v13"/>
+                <circle cx="6" cy="18" r="3"/>
+                <circle cx="17" cy="16" r="3"/>
+                <path d="M3 3l18 18" stroke-width="2.2"/>
+            </svg>
+
+            <!-- Nota musical: música sonando -->
+            <svg
+                id="icono-pause"
+                class="nota-sonando w-6 h-6 sm:w-7 sm:h-7 text-white"
+                fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                viewBox="0 0 24 24"
+            >
+                <path d="M9 18V5l11-2v13"/>
+                <circle cx="6" cy="18" r="3"/>
+                <circle cx="17" cy="16" r="3"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Audio element (oculto) SIN autoplay -->
+    <audio id="audio-player" preload="auto" loop>
+        <source src="/audio/melodia.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <!-- Imagen Principal con desvanecimiento -->
+    <div class="relative w-full">
+        <!-- Imagen principal -->
+        <div class="relative w-full h-[380px] sm:h-[460px] md:h-[520px] overflow-hidden">
+            <!-- Foto ampliada y corrida a la izquierda: deja fuera la columna
+                 blanca del borde izquierdo y centra a la pareja -->
+            <img
+                id="imagen-principal"
+                src="/imagenes/foto1.webp"
+                alt="Foto de los novios"
+                class="max-w-none w-[118%] h-full -ml-[12%] object-cover object-[50%_45%]"
+            />
+
+            <!-- Viñeta superior sutil para dar profundidad -->
+            <div class="pointer-events-none absolute top-0 left-0 w-full h-28 bg-gradient-to-b from-black/15 to-transparent"></div>
+
+            <!-- Marco interior fino dorado -->
+            <div class="pointer-events-none absolute inset-4 sm:inset-6 border border-white/40"></div>
+
+            <!-- Degradado de desvanecimiento -->
+            <div id="degradado" class="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-white to-transparent"></div>
+        </div>
+    </div>
+
+    <!-- Texto de invitación -->
+    <div id="texto-invitacion" class="relative w-full px-6 pt-4 pb-2 text-center flex flex-col items-center">
+
+        <!-- Línea superior elegante -->
+        <p class="font-serif text-[#C9A961] text-xs sm:text-sm tracking-[0.4em] uppercase mb-3">
+            Con amor
+        </p>
+
+        <p class="font-serif text-gray-700 text-base sm:text-lg md:text-xl tracking-wide leading-relaxed">
+            TENEMOS EL HONOR<br />
+            DE INVITARTE A NUESTRA BODA
+        </p>
+
+        <!-- Divisor ornamental dorado -->
+        <div id="divisor-texto" class="flex items-center gap-4 mt-4">
+            <span class="block w-12 sm:w-20 h-px bg-gradient-to-r from-transparent to-[#C9A961]/70"></span>
+            <span class="text-[#C9A961] text-base leading-none tracking-widest">&#10070;</span>
+            <span class="block w-12 sm:w-20 h-px bg-gradient-to-l from-transparent to-[#C9A961]/70"></span>
+        </div>
+    </div>
+
+    <!-- Contenedor del aro con nombres -->
+    <div class="relative w-full flex justify-center pt-2 pb-8">
+
+        <!-- Hojas decorativas a la izquierda -->
+        <div id="hojas-izquierda" class="absolute top-1/2 left-0 -translate-y-1/2 w-28 sm:w-36 md:w-44 z-0 pointer-events-none">
+            <img
+                src="/imagenes/hojas.png"
+                alt="Hojas decorativas"
+                class="w-full h-auto object-contain"
+                style="opacity: 0.1;"
+            />
+        </div>
+
+        <div class="relative z-10 w-56 h-56 sm:w-72 sm:h-72 md:w-80 md:h-80">
+
+            <!-- Imagen del aro -->
+            <img
+                id="aro-decorativo"
+                src="/imagenes/aro.webp"
+                alt="Aro decorativo"
+                class="relative w-full h-full object-contain"
+            />
+
+            <!-- Nombres de los novios centrados -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <h2 id="nf-nombre-novio" class="font-great-vibes text-4xl sm:text-5xl md:text-6xl text-[#C9A961] tracking-wide">
+                    Carlos
+                </h2>
+                <div id="nf-ampersand" class="flex items-center gap-3 my-1">
+                    <span class="w-6 sm:w-8 h-px bg-[#C9A961]/50"></span>
+                    <span class="text-[#C9A961] text-3xl sm:text-4xl md:text-5xl font-charm">&amp;</span>
+                    <span class="w-6 sm:w-8 h-px bg-[#C9A961]/50"></span>
+                </div>
+                <h2 id="nf-nombre-novia" class="font-great-vibes text-4xl sm:text-5xl md:text-6xl text-[#C9A961] tracking-wide">
+                    Fabiola
+                </h2>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP Y REPRODUCTOR                       -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const stNF = { trigger: "#nombresflores", start: "top 80%", toggleActions: "play none none reverse" };
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("🎊 Iniciando animaciones de invitación...");
+
+        // ═══ REPRODUCTOR DE MÚSICA - Inicia automáticamente cuando se carga el componente ═══
+        const audio = document.getElementById("audio-player") as HTMLAudioElement;
+        const btnReproducir = document.getElementById("btn-reproducir");
+        const iconoPlay = document.getElementById("icono-play");
+        const iconoPause = document.getElementById("icono-pause");
+
+        let estaReproduciendo = false;
+
+        // Función para intentar reproducir con manejo de errores
+        const intentarReproducir = async () => {
+            try {
+                await audio?.play();
+                estaReproduciendo = true;
+                iconoPlay?.classList.add("hidden");
+                iconoPause?.classList.remove("hidden");
+                console.log("🎵 Música iniciada automáticamente");
+            } catch (error) {
+                console.log("⚠️ No se pudo reproducir automáticamente, esperando interacción del usuario");
+                estaReproduciendo = false;
+                iconoPlay?.classList.remove("hidden");
+                iconoPause?.classList.add("hidden");
+            }
+        };
+
+        // ⭐ INICIAR MÚSICA SOLO AL PRESIONAR "INGRESAR" EN LA PORTADA
+        // La portada dispara este evento al cerrarse
+        window.addEventListener("iniciar-musica", () => {
+            if (!estaReproduciendo) {
+                intentarReproducir();
+            }
+        });
+
+        // Funcionalidad del botón play/pause
+        btnReproducir?.addEventListener("click", (e) => {
+            e.stopPropagation(); // Evitar que active el listener de iniciarConInteraccion
+            
+            if (!estaReproduciendo) {
+                // Reproducir música
+                audio?.play();
+                estaReproduciendo = true;
+                
+                // Cambiar iconos
+                iconoPlay?.classList.add("hidden");
+                iconoPause?.classList.remove("hidden");
+                
+            } else {
+                // Pausar música
+                audio?.pause();
+                estaReproduciendo = false;
+                
+                // Cambiar iconos
+                iconoPlay?.classList.remove("hidden");
+                iconoPause?.classList.add("hidden");
+            }
+        });
+
+        // Reiniciar cuando termine la canción (aunque tiene loop)
+        audio?.addEventListener("ended", () => {
+            estaReproduciendo = false;
+            iconoPlay?.classList.remove("hidden");
+            iconoPause?.classList.add("hidden");
+        });
+
+        // ═══ IMAGEN PRINCIPAL - Fade in desde arriba ═══
+        gsap.fromTo(
+            "#imagen-principal",
+            { opacity: 0, y: -50 },
+            { opacity: 1, y: 0, duration: 1, ease: "power2.out", delay: 0, scrollTrigger: stNF }
+        );
+
+        // ═══ DEGRADADO - Aparece después de la imagen ═══
+        gsap.fromTo(
+            "#degradado",
+            { opacity: 0 },
+            { opacity: 1, duration: 0.8, ease: "power2.out", delay: 0.5, scrollTrigger: stNF }
+        );
+
+        // ═══ TEXTO DE INVITACIÓN - Fade in desde abajo ═══
+        gsap.fromTo(
+            "#texto-invitacion",
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.8, scrollTrigger: stNF }
+        );
+
+        // ═══ DIVISOR ORNAMENTAL - Aparece con el texto ═══
+        gsap.fromTo(
+            "#divisor-texto",
+            { opacity: 0, scaleX: 0.4 },
+            { opacity: 1, scaleX: 1, duration: 0.9, ease: "power2.out", delay: 1, scrollTrigger: stNF }
+        );
+
+        // ═══ HOJAS DECORATIVAS IZQUIERDA - Fade in suave ═══
+        gsap.fromTo(
+            "#hojas-izquierda",
+            { opacity: 0, x: -30 },
+            { opacity: 1, x: 0, duration: 1, ease: "power2.out", delay: 1.2, scrollTrigger: stNF }
+        );
+
+        // ═══ ARO DECORATIVO - Scale desde el centro ═══
+        gsap.fromTo(
+            "#aro-decorativo",
+            { opacity: 0, scale: 0.3, rotation: -10 },
+            { opacity: 1, scale: 1, rotation: 0, duration: 1, ease: "back.out(1.7)", delay: 1.2, scrollTrigger: stNF }
+        );
+
+        // ═══ NOMBRE JOHN - Letra por letra ═══
+        const textoJohn = "Carlos";
+        const contenedorJohn = document.getElementById("nf-nombre-novio");
+        if (contenedorJohn) {
+            contenedorJohn.innerHTML = textoJohn
+                .split("")
+                .map(
+                    (letra, index) =>
+                        `<span class="letra-animada" style="
+                            opacity: 0; 
+                            display: inline-block; 
+                            transform: translateY(20px) scale(0.8);
+                            filter: blur(3px);
+                        ">${letra}</span>`
+                )
+                .join("");
+
+            gsap.to("#nf-nombre-novio .letra-animada", {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                filter: "blur(0px)",
+                duration: 0.5,
+                ease: "power2.out",
+                stagger: { each: 0.05, from: "start" },
+                delay: 1.6
+            });
+        }
+
+        // ═══ SÍMBOLO & - Scale con bounce ═══
+        gsap.fromTo(
+            "#nf-ampersand",
+            { opacity: 0, scale: 0.5 },
+            { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2)", delay: 2 }
+        );
+
+        // ═══ NOMBRE DAMARYS - Letra por letra ═══
+        const textoDamarys = "Fabiola";
+        const contenedorDamarys = document.getElementById("nf-nombre-novia");
+        if (contenedorDamarys) {
+            contenedorDamarys.innerHTML = textoDamarys
+                .split("")
+                .map(
+                    (letra, index) =>
+                        `<span class="letra-animada" style="
+                            opacity: 0; 
+                            display: inline-block; 
+                            transform: translateY(20px) scale(0.8);
+                            filter: blur(3px);
+                        ">${letra}</span>`
+                )
+                .join("");
+
+            gsap.to("#nf-nombre-novia .letra-animada", {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                filter: "blur(0px)",
+                duration: 0.5,
+                ease: "power2.out",
+                stagger: { each: 0.05, from: "start" },
+                delay: 2.2
+            });
+        }
+
+        // ═══ ROTACIÓN SUAVE DEL ARO (loop infinito) ═══
+        gsap.to("#aro-decorativo", {
+            rotation: 5,
+            duration: 3,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+            delay: 3
+        });
+
+        console.log("✨ Animaciones completadas!");
+    });
+</script>
+
+<style>
+    /* Asegurar que las imágenes carguen correctamente */
+    img {
+        display: block;
+    }
+    
+    /* Efecto hover en letras animadas */
+    .letra-animada {
+        transition: all 0.3s ease;
+        will-change: transform, opacity, filter;
+        position: relative;
+    }
+
+    .letra-animada:hover {
+        transform: translateY(-3px) scale(1.1) !important;
+        text-shadow: 0 0 15px rgba(201, 169, 97, 0.5) !important;
+    }
+
+    /* Nota que se mece mientras suena la música */
+    @keyframes nota-mecer {
+        0%, 100% { transform: rotate(-8deg); }
+        50% { transform: rotate(8deg); }
+    }
+
+    .nota-sonando {
+        animation: nota-mecer 1.6s ease-in-out infinite;
+    }
+
+    /* Responsivo */
+    @media (max-width: 640px) {
+        #reproductor-fijo {
+            bottom: 1rem;
+            right: 1rem;
+        }
+    }
+</style>

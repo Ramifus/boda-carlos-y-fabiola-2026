@@ -1,0 +1,229 @@
+---
+// ComponentePase.astro
+---
+
+<section class="relative w-full py-2">
+    
+    <div class="max-w-2xl mx-auto">
+        
+        <!-- Contenedor principal con fondo verde oliva -->
+        <div
+            id="pase-container"
+            class="relative bg-[#6B7154] rounded-lg p-6 sm:p-8 text-center shadow-2xl overflow-hidden"
+        >
+
+            <!-- Borde interior fino dorado (detalle elegante) -->
+            <span class="pointer-events-none absolute inset-3 sm:inset-4 border border-[#C9A961]/30 rounded"></span>
+
+            <div class="relative">
+
+                <!-- Versículo bíblico -->
+                <div id="texto-superior" class="mb-2">
+                    <p class="text-white text-sm sm:text-base md:text-lg leading-relaxed font-serif text-center">
+                        ASÍ QUE NO SON YA MÁS DOS, SINO UNA SOLA CARNE;<br />
+                        POR TANTO, LO QUE DIOS JUNTÓ, QUE NO LO SEPARE EL HOMBRE.<br />
+                        <span class="italic mt-1 block text-[#C9A961]">MATEO 19:6</span>
+                    </p>
+                </div>
+
+                <!-- Línea decorativa con ornamento -->
+                <div id="linea-decorativa" class="flex items-center justify-center gap-3 my-4">
+                    <span class="block w-16 sm:w-24 h-px bg-gradient-to-r from-transparent to-[#C9A961]"></span>
+                    <span class="text-[#C9A961] text-sm leading-none">&#10070;</span>
+                    <span class="block w-16 sm:w-24 h-px bg-gradient-to-l from-transparent to-[#C9A961]"></span>
+                </div>
+
+                <!-- Texto "HEMOS RESERVADO:" -->
+                <div id="texto-reservado" class="mb-1">
+                    <p class="text-white text-xs sm:text-sm md:text-base uppercase tracking-[0.25em] font-serif">
+                        HEMOS RESERVADO:
+                    </p>
+                </div>
+
+                <!-- Número de pases -->
+                <div id="numero-pase">
+                    <span class="text-[#C9A961] text-6xl sm:text-7xl md:text-8xl font-bold font-serif leading-none">
+                        1
+                    </span>
+                </div>
+
+                <!-- Texto "PASE" -->
+                <div id="texto-pase">
+                    <p class="text-[#C9A961] text-base sm:text-lg md:text-xl uppercase tracking-[0.2em] font-serif">
+                        PASE
+                    </p>
+                </div>
+
+                <!-- Texto "EN SU HONOR" -->
+                <div id="texto-honor" class="mt-1">
+                    <p class="text-white/90 text-sm sm:text-base uppercase tracking-[0.2em] font-serif">
+                        EN SU HONOR
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("🎊 Iniciando animaciones de pase...");
+
+        // ═══ CONTENEDOR PRINCIPAL ═══
+        gsap.fromTo(
+            "#pase-container",
+            { opacity: 0, scale: 0.9, y: 50 },
+            {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                duration: 1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+
+        // ═══ TEXTO SUPERIOR (VERSÍCULO) ═══
+        gsap.fromTo(
+            "#texto-superior",
+            { opacity: 0, y: -20 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.3
+            }
+        );
+
+        // ═══ LÍNEA DECORATIVA ═══
+        gsap.fromTo(
+            "#linea-decorativa",
+            { scaleX: 0 },
+            {
+                scaleX: 1,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.8
+            }
+        );
+
+        // ═══ TEXTO "HEMOS RESERVADO:" ═══
+        gsap.fromTo(
+            "#texto-reservado",
+            { opacity: 0, y: 20 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 1.2
+            }
+        );
+
+        // ═══ NÚMERO DE PASE ═══
+        gsap.fromTo(
+            "#numero-pase",
+            { opacity: 0, scale: 0.3, rotation: -15 },
+            {
+                opacity: 1,
+                scale: 1,
+                rotation: 0,
+                duration: 1,
+                ease: "back.out(2)",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 1.5
+            }
+        );
+
+        // ═══ TEXTO "PASE" ═══
+        gsap.fromTo(
+            "#texto-pase",
+            { opacity: 0, y: 10 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 1.9
+            }
+        );
+
+        // ═══ TEXTO "EN SU HONOR" ═══
+        gsap.fromTo(
+            "#texto-honor",
+            { opacity: 0, y: 10 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#pase-container",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 2.1
+            }
+        );
+
+        console.log("✨ Animaciones de pase completadas!");
+    });
+</script>
+
+<style>
+    /* Transiciones suaves */
+    #pase-container {
+        transition: all 0.3s ease;
+    }
+
+    /* Efecto hover en el número */
+    #numero-pase span {
+        display: inline-block;
+        transition: transform 0.3s ease;
+    }
+
+    #numero-pase:hover span {
+        transform: scale(1.05);
+    }
+</style>

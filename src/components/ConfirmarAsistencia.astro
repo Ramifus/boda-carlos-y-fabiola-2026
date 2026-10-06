@@ -1,0 +1,148 @@
+---
+// ComponenteConfirmarAsistencia.astro
+---
+
+<section class="relative w-full mt-8  py-4 px-6">
+    
+    <div class="max-w-lg mx-auto text-center">
+        
+        <!-- Título "Confirma tu Asistencia" -->
+        <div id="titulo-asistencia" class="mb-6">
+            <h3 class="font-great-vibes text-5xl sm:text-6xl md:text-7xl text-[#C9A961] tracking-wide">
+                Confirma tu Asistencia
+            </h3>
+        </div>
+
+        <!-- Texto explicativo -->
+        <div id="texto-asistencia" class="mb-6">
+            <p class="text-[#6B6B6B] text-sm sm:text-base font-serif leading-relaxed">
+                SERÁ DE MUCHA ALEGRÍA PARA NOSOTROS CONTAR<br />
+                CON TU COMPAÑÍA EN ESTE DÍA TAN IMPORTANTE.
+            </p>
+        </div>
+
+        <!-- Texto de fecha límite -->
+        <div id="texto-fecha-limite" class="mb-8">
+            <p class="text-[#6B6B6B] text-sm sm:text-base font-serif leading-relaxed">
+                POR FAVOR CONFIRMAR TU ASISTENCIA
+            </p>
+        </div>
+
+        <!-- Botón "CONFIRMAR ASISTENCIA" -->
+      <!-- Botón "CONFIRMAR ASISTENCIA" -->
+<div id="boton-asistencia">
+    <a
+        href="https://wa.me/59176608772?text=Me%20complace%20confirmar%20mi%20asistencia%20a%20la%20boda%20de%20Carlos%20y%20Fabiola%2C%20que%20se%20realizar%C3%A1%20el%20d%C3%ADa%20s%C3%A1bado%2028%20de%20noviembre%20de%202026.%20%C2%A1Estar%C3%A9%20sin%20falta!%20Muchas%20gracias."
+        target="_blank"
+        rel="noopener"
+        class="group relative inline-block bg-[#6B7154] text-white px-10 py-3.5 rounded-lg text-sm sm:text-base font-serif uppercase tracking-[0.2em] hover:bg-[#5a5e45] hover:-translate-y-0.5 transition-all duration-300 shadow-md hover:shadow-lg"
+    >
+        <span class="pointer-events-none absolute inset-1.5 rounded border border-white/30 transition-all duration-300 group-hover:inset-[7px]"></span>
+        <span class="relative">Confirmar asistencia</span>
+    </a>
+</div>
+
+
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("✉️ Iniciando animaciones de confirmar asistencia...");
+
+        // ═══ TÍTULO "CONFIRMA TU ASISTENCIA" ═══
+        gsap.fromTo(
+            "#titulo-asistencia",
+            { opacity: 0, y: -30 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#titulo-asistencia",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+
+        // ═══ TEXTO EXPLICATIVO ═══
+        gsap.fromTo(
+            "#texto-asistencia",
+            { opacity: 0, y: 20 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#texto-asistencia",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.3
+            }
+        );
+
+        // ═══ TEXTO FECHA LÍMITE ═══
+        gsap.fromTo(
+            "#texto-fecha-limite",
+            { opacity: 0, y: 20 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#texto-fecha-limite",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.5
+            }
+        );
+
+        // ═══ BOTÓN "CONFIRMAR ASISTENCIA" ═══
+        gsap.fromTo(
+            "#boton-asistencia",
+            { opacity: 0, scale: 0.8 },
+            {
+                opacity: 1,
+                scale: 1,
+                duration: 0.8,
+                ease: "back.out(1.5)",
+                scrollTrigger: {
+                    trigger: "#boton-asistencia",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.7
+            }
+        );
+
+        console.log("✨ Animaciones de confirmar asistencia completadas!");
+    });
+</script>
+
+<style>
+    /* Efecto hover en el título */
+    #titulo-asistencia:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+    }
+
+    /* Animación del botón al hacer clic */
+    #boton-asistencia a:active {
+        transform: scale(0.95);
+    }
+</style>

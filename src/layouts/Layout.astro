@@ -1,0 +1,70 @@
+---
+// src/layouts/Layout.astro
+import '../styles/global.css';
+export interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+<!doctype html>
+<html lang="es" class="m-0 p-0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- La invitación siempre en claro, aunque el celular esté en modo oscuro -->
+    <meta name="color-scheme" content="only light" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" type="image/png" href="/iconos/Anillos.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+     <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Crimson+Text:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+     html {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* ← Elimina scroll horizontal */
+    /* Siempre en claro: "only light", en ese orden ("light only" se ignora) */
+    color-scheme: only light;
+}
+
+/* Fondo blanco ÚNICO de toda la invitación (las secciones no llevan fondo).
+   Va como imagen y no como color: el modo oscuro forzado de algunos
+   celulares oscurece colores pero respeta las imágenes. */
+html,
+body {
+    background-color: #fff;
+    background-image: linear-gradient(#fff, #fff);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden; /* ← Elimina scroll horizontal */
+}
+
+      main {
+        background: transparent !important;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen m-0 p-0">
+    <main class="m-0 p-0 overflow-x-hidden">
+      <slot />
+    </main>
+  </body>
+</html>

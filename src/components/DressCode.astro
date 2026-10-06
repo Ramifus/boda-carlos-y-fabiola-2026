@@ -1,0 +1,139 @@
+---
+// ComponenteDressCode.astro
+---
+
+<section class="relative w-full mt-10 py-10 overflow-x-clip">
+
+    <div class="relative max-w-2xl mx-auto z-10">
+
+        <!-- Tarjeta con fondo verde oliva -->
+        <div id="dress-container" class="relative bg-[#6B7154] rounded-lg p-8 sm:p-10 text-center shadow-2xl overflow-hidden">
+
+            <!-- Hoja decorativa blanca a la derecha -->
+            <div id="hojas-dress" class="pointer-events-none absolute top-1/2 -right-20 -translate-y-1/2 w-36 sm:w-44 md:w-52 z-0">
+                <img
+                    src="/imagenes/hojas.png"
+                    alt="Hojas decorativas"
+                    class="w-full h-auto object-contain scale-x-[-1]"
+                    style="filter: brightness(0) invert(1); opacity: 0.15;"
+                />
+            </div>
+
+            <!-- Borde interior fino dorado (detalle elegante) -->
+            <span class="pointer-events-none absolute inset-3 sm:inset-4 border border-[#C9A961]/30 rounded"></span>
+
+            <div class="relative z-10">
+
+                <!-- Título "Código de Vestimenta" -->
+                <div id="titulo-dress" class="mb-2">
+                    <h3 class="font-great-vibes text-5xl sm:text-6xl md:text-7xl text-white tracking-wide">
+                        Código de Vestimenta
+                    </h3>
+                </div>
+
+                <!-- Divisor ornamental -->
+                <div class="flex items-center justify-center gap-3 mb-5">
+                    <span class="block w-12 sm:w-16 h-px bg-gradient-to-r from-transparent to-[#C9A961]"></span>
+                    <span class="text-[#C9A961] text-sm leading-none">&#10070;</span>
+                    <span class="block w-12 sm:w-16 h-px bg-gradient-to-l from-transparent to-[#C9A961]"></span>
+                </div>
+
+                <!-- Subtítulo "TRAJE FORMAL" -->
+                <div id="subtitulo-formal" class="mb-3">
+                    <p class="text-[#C9A961] text-base sm:text-lg md:text-xl font-serif uppercase tracking-[0.25em]">
+                        Traje Formal
+                    </p>
+                </div>
+
+                <!-- Texto: Evitar el color blanco -->
+                <div id="texto-evitar">
+                    <p class="text-white/90 text-sm sm:text-base font-serif tracking-[0.12em] uppercase">
+                        Mujeres: Blanco reservado para la Novia
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("👔 Iniciando animaciones de código de vestimenta...");
+
+        // ═══ TÍTULO "CÓDIGO DE VESTIMENTA" ═══
+        gsap.fromTo(
+            "#titulo-dress",
+            { opacity: 0, y: -30 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#titulo-dress",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.3
+            }
+        );
+
+        // ═══ SUBTÍTULO "TRAJE FORMAL" ═══
+        gsap.fromTo(
+            "#subtitulo-formal",
+            { opacity: 0, scale: 0.8 },
+            {
+                opacity: 1,
+                scale: 1,
+                duration: 0.6,
+                ease: "back.out(1.5)",
+                scrollTrigger: {
+                    trigger: "#subtitulo-formal",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.6
+            }
+        );
+
+        // ═══ TEXTO "EVITAR EL COLOR BLANCO" ═══
+        gsap.fromTo(
+            "#texto-evitar",
+            { opacity: 0, y: 20 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#texto-evitar",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                delay: 0.9
+            }
+        );
+
+        console.log("✨ Animaciones de código de vestimenta completadas!");
+    });
+</script>
+
+<style>
+    /* Efecto hover en título */
+    #titulo-dress:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+    }
+</style>

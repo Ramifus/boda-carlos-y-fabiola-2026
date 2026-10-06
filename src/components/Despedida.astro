@@ -1,0 +1,182 @@
+---
+// ComponenteNombresAroFinal.astro
+// Cierre de la invitación: misma corona de hojas que la portada, nombres,
+// fecha y mensaje final.
+---
+
+<section id="despedida" class="relative w-full pt-12 pb-20 px-6 overflow-hidden bg-gradient-to-b from-white via-[#f8f6f2] to-[#ece5db]">
+
+    <!-- Flores en la esquina inferior derecha, como en la portada -->
+    <div id="despedida-flores" class="pointer-events-none absolute bottom-0 right-0 w-44 sm:w-56 opacity-80">
+        <img src="/imagenes/FloresAbajo.webp" alt="" class="w-full h-auto" />
+    </div>
+
+    <div class="relative max-w-md mx-auto flex flex-col items-center text-center">
+
+        <!-- Línea superior -->
+        <p id="despedida-overline" class="font-serif text-[#C9A961] text-sm sm:text-base tracking-[0.35em] uppercase mb-3">
+            Con todo nuestro amor
+        </p>
+
+        <!-- Corona de hojas con los nombres -->
+        <div class="relative w-64 sm:w-80 aspect-[580/682]">
+            <img
+                id="despedida-aro"
+                src="/imagenes/FloresCentro.webp"
+                alt="Corona de hojas"
+                class="w-full h-full object-contain"
+            />
+
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <h2 id="despedida-nombre-john" class="font-great-vibes text-5xl sm:text-6xl text-[#C9A961]">
+                    Carlos
+                </h2>
+                <div id="despedida-ampersand" class="flex items-center gap-3 my-1">
+                    <span class="w-6 sm:w-8 h-px bg-[#C9A961]/50"></span>
+                    <span class="text-[#C9A961] text-3xl sm:text-4xl font-charm">&amp;</span>
+                    <span class="w-6 sm:w-8 h-px bg-[#C9A961]/50"></span>
+                </div>
+                <h2 id="despedida-nombre-damarys" class="font-great-vibes text-5xl sm:text-6xl text-[#C9A961]">
+                    Fabiola
+                </h2>
+            </div>
+        </div>
+
+        <!-- Fecha -->
+        <div id="despedida-fecha" class="mt-4 flex items-center justify-center gap-2 text-[#9a9a9a]">
+            <span class="w-6 h-px bg-[#C9A961]/60"></span>
+            <span class="font-serif text-sm sm:text-base tracking-[0.2em] uppercase whitespace-nowrap">28 · Noviembre · 2026</span>
+            <span class="w-6 h-px bg-[#C9A961]/60"></span>
+        </div>
+
+        <!-- Divisor ornamental -->
+        <div id="despedida-divisor" class="flex items-center justify-center gap-4 mt-8 mb-5">
+            <span class="block w-12 sm:w-16 h-px bg-gradient-to-r from-transparent to-[#C9A961]/70"></span>
+            <span class="text-[#C9A961] text-sm leading-none">&#10070;</span>
+            <span class="block w-12 sm:w-16 h-px bg-gradient-to-l from-transparent to-[#C9A961]/70"></span>
+        </div>
+
+        <!-- Mensaje -->
+        <p id="despedida-mensaje" class="font-serif text-[#6B6B6B] text-sm sm:text-base tracking-[0.12em] leading-relaxed">
+            NOS HARÁ MUY FELICES<br />CONTAR CON TU PRESENCIA
+        </p>
+
+        <!-- Cierre -->
+        <p id="despedida-cierre" class="font-great-vibes text-4xl sm:text-5xl text-[#6B7154] mt-5">
+            ¡Te esperamos!
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const stCorona = { trigger: "#despedida-aro", start: "top 80%", once: true };
+        const stMensaje = { trigger: "#despedida-divisor", start: "top 90%", once: true };
+
+        // ═══ LÍNEA SUPERIOR ═══
+        gsap.fromTo(
+            "#despedida-overline",
+            { opacity: 0, y: -15, letterSpacing: "0.6em" },
+            { opacity: 1, y: 0, letterSpacing: "0.35em", duration: 1, ease: "power2.out", scrollTrigger: stCorona }
+        );
+
+        // ═══ CORONA - Scale desde el centro ═══
+        gsap.fromTo(
+            "#despedida-aro",
+            { opacity: 0, scale: 0.5, rotation: -5 },
+            { opacity: 1, scale: 1, rotation: 0, duration: 1.2, ease: "back.out(1.5)", scrollTrigger: stCorona }
+        );
+
+        // ═══ ROTACIÓN MUY SUAVE DE LA CORONA (loop infinito) ═══
+        gsap.to("#despedida-aro", {
+            rotation: 2,
+            duration: 4,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+            delay: 1.5
+        });
+
+        // ═══ NOMBRES - Letra por letra ═══
+        const letrasAnimadas = (id: string, texto: string) => {
+            const contenedor = document.getElementById(id);
+            if (!contenedor) return;
+            contenedor.innerHTML = texto
+                .split("")
+                .map(
+                    (letra) =>
+                        `<span class="letra-animada" style="
+                            opacity: 0;
+                            display: inline-block;
+                            transform: translateY(20px) scale(0.8);
+                            filter: blur(3px);
+                        ">${letra}</span>`
+                )
+                .join("");
+        };
+
+        letrasAnimadas("despedida-nombre-john", "Carlos");
+        letrasAnimadas("despedida-nombre-damarys", "Fabiola");
+
+        const tlNombres = gsap.timeline({ scrollTrigger: stCorona, delay: 0.5 });
+        tlNombres
+            .to("#despedida-nombre-john .letra-animada", {
+                opacity: 1, y: 0, scale: 1, filter: "blur(0px)",
+                duration: 0.5, ease: "power2.out", stagger: 0.05
+            })
+            .fromTo(
+                "#despedida-ampersand",
+                { opacity: 0, scale: 0.5 },
+                { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(2)" },
+                "-=0.2"
+            )
+            .to("#despedida-nombre-damarys .letra-animada", {
+                opacity: 1, y: 0, scale: 1, filter: "blur(0px)",
+                duration: 0.5, ease: "power2.out", stagger: 0.05
+            }, "-=0.2")
+            .fromTo(
+                "#despedida-fecha",
+                { opacity: 0, y: 15 },
+                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+            );
+
+        // ═══ DIVISOR / MENSAJE / CIERRE ═══
+        const tlMensaje = gsap.timeline({ scrollTrigger: stMensaje });
+        tlMensaje
+            .fromTo("#despedida-divisor", { opacity: 0, scaleX: 0.4 }, { opacity: 1, scaleX: 1, duration: 0.8, ease: "power2.out" })
+            .fromTo("#despedida-mensaje", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.5")
+            .fromTo("#despedida-cierre", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.9, ease: "back.out(1.6)" }, "-=0.3");
+
+        // ═══ FLORES DE LA ESQUINA ═══
+        gsap.fromTo(
+            "#despedida-flores",
+            { opacity: 0, y: 30 },
+            { opacity: 0.8, y: 0, duration: 1.2, ease: "power2.out", scrollTrigger: { trigger: "#despedida", start: "top 60%", once: true } }
+        );
+    });
+</script>
+
+<style>
+    /* Efecto hover en letras animadas */
+    .letra-animada {
+        transition: all 0.3s ease;
+        will-change: transform, opacity, filter;
+        position: relative;
+    }
+
+    .letra-animada:hover {
+        transform: translateY(-3px) scale(1.1) !important;
+        text-shadow: 0 0 15px rgba(201, 169, 97, 0.5) !important;
+    }
+</style>
