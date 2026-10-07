@@ -1,0 +1,176 @@
+---
+// Invitados.astro
+// Tarjeta del pase: nombre del invitado y cantidad de pases asignados.
+//
+// El nombre y los pases llegan desde el panel de invitados (link ...?i=código).
+// El sitio es estático: el servidor no sabe quién abre el link, así que la
+// tarjeta sale VACÍA y ESCONDIDA, y el script la llena y la muestra solo si
+// encontró al invitado. Sin invitado válido (link sin código, código borrado,
+// base caída o claves sin configurar) la tarjeta no aparece y el resto de la
+// invitación se ve normal: nunca se muestra un nombre de muestra.
+//
+// Las frases que dependen del número salen de ../utils/pases (único lugar).
+---
+
+<section id="invitado-seccion" class="relative w-full py-10 px-6" style="display: none;">
+
+    <div class="max-w-sm mx-auto">
+
+        <!-- Tarjeta verde oliva (como Código de Vestimenta) para que resalte -->
+        <div
+            id="invitado-card"
+            class="relative rounded-3xl px-7 pt-11 pb-10 text-center overflow-hidden shadow-2xl shadow-[#6B7154]/40 bg-gradient-to-br from-[#7a8566] via-[#6B7154] to-[#5c6247]"
+        >
+
+            <!-- Doble borde dorado -->
+            <span class="pointer-events-none absolute inset-3 border border-[#C9A961]/60 rounded-2xl"></span>
+            <span class="pointer-events-none absolute inset-[18px] border border-[#C9A961]/25 rounded-xl"></span>
+
+            <!-- Hojas blancas translúcidas en dos esquinas opuestas.
+                 GSAP anima el contenedor; el volteo va en la imagen para que
+                 la animación no lo pise. -->
+            <div class="invitado-hojas pointer-events-none absolute -left-6 top-5 w-20" style="opacity: 0.12;">
+                <img
+                    src="/imagenes/hojas.webp"
+                    alt=""
+                    class="w-full h-auto"
+                    style="filter: brightness(0) invert(1);"
+                />
+            </div>
+            <div class="invitado-hojas pointer-events-none absolute -right-6 bottom-5 w-20" style="opacity: 0.12;">
+                <img
+                    src="/imagenes/hojas.webp"
+                    alt=""
+                    class="w-full h-auto"
+                    style="filter: brightness(0) invert(1); transform: scaleX(-1);"
+                />
+            </div>
+
+            <div class="relative flex flex-col items-center">
+
+                <!-- Encabezado -->
+                <p id="invitado-encabezado" class="font-serif text-[#C9A961] text-sm uppercase tracking-[0.3em] leading-relaxed px-4">
+                    Invitación con<br />mucho cariño para
+                </p>
+
+                <!-- Divisor ornamental -->
+                <div id="invitado-divisor" class="flex items-center justify-center gap-3 mt-3 mb-4">
+                    <span class="block w-10 h-px bg-gradient-to-r from-transparent to-[#C9A961]"></span>
+                    <span class="text-[#C9A961] text-sm leading-none">&#10070;</span>
+                    <span class="block w-10 h-px bg-gradient-to-l from-transparent to-[#C9A961]"></span>
+                </div>
+
+                <!-- Nombre del invitado: baja de renglón si es largo, no se achica -->
+                <h3 id="invitado-nombre" class="font-great-vibes text-4xl sm:text-5xl text-white leading-tight text-balance drop-shadow-sm">
+                </h3>
+
+                <!-- Pases asignados -->
+                <p id="invitado-etiqueta" class="font-serif text-[#C9A961] text-sm uppercase tracking-[0.3em] mt-7 mb-4">
+                    Pases asignados
+                </p>
+
+                <!-- Medallón con el número -->
+                <div id="invitado-pases" class="relative w-28 h-28 rounded-full border border-[#C9A961] flex flex-col items-center justify-center">
+                    <span class="pointer-events-none absolute inset-1.5 rounded-full border border-[#C9A961]/35"></span>
+                    <p id="numero-pases" class="relative font-cormorant font-light text-white text-6xl leading-none tabular-nums"></p>
+                    <p id="palabra-pases" class="relative font-serif text-[#C9A961] text-[11px] uppercase tracking-[0.3em] mt-1 pl-[0.3em]"></p>
+                </div>
+
+                <!-- Mensaje -->
+                <p id="invitado-mensaje" class="font-cormorant italic text-white/85 text-lg sm:text-xl mt-7">
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    import { datosInvitado, alCambiarInvitado } from "../lib/invitado";
+    import { palabraPases, mensajePresencia } from "../utils/pases";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ═══════════════════════════════════════════════════════════
+    // PASE PERSONALIZADO
+    // El link trae solo un código (?i=k7m2p); el nombre y los pases viven en
+    // la base. Si los novios corrigen algo en el panel, la tarjeta se
+    // actualiza sola (alCambiarInvitado), sin recargar.
+    // ═══════════════════════════════════════════════════════════
+
+    function texto(id: string, valor: string) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = valor;
+    }
+
+    function visible(id: string, si: boolean) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = si ? "" : "none";
+    }
+
+    function mostrarInvitado(inv: any) {
+        // Sin invitado no se toca nada: la tarjeta sigue escondida (o, si ya
+        // se mostró y la base dejó de contestar un momento, con lo último que
+        // se supo). Si lo borraron, LinkNoDisponible tapa la invitación.
+        if (!inv || !inv.nombre) return;
+
+        texto("invitado-nombre", inv.nombre);
+
+        const pases = inv.pases;
+        const conPases =
+            !(inv.funciones && inv.funciones.pases === false) &&
+            Number.isInteger(pases) && pases > 0;
+
+        // Bodas sin pases: la tarjeta muestra solo el nombre, sin inventar
+        // un "1 pase".
+        visible("invitado-etiqueta", conPases);
+        visible("invitado-pases", conPases);
+        if (conPases) {
+            texto("numero-pases", String(pases));
+            texto("palabra-pases", palabraPases(pases));
+        }
+        texto("invitado-mensaje", mensajePresencia(conPases ? pases : 2));
+
+        const seccion = document.getElementById("invitado-seccion");
+        if (seccion && seccion.style.display === "none") {
+            seccion.style.display = "";
+            // La animación se arma recién ahora: con la tarjeta escondida
+            // ScrollTrigger no sabe dónde está y la dispararía en el aire.
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", animarTarjeta);
+            } else {
+                animarTarjeta();
+            }
+            // La tarjeta empuja hacia abajo todo lo que viene después: las
+            // animaciones por scroll tienen que recalcular dónde disparar.
+            ScrollTrigger.refresh();
+        }
+    }
+
+    datosInvitado().then(mostrarInvitado);
+    alCambiarInvitado(mostrarInvitado);
+
+    function animarTarjeta() {
+        const tl = gsap.timeline({
+            scrollTrigger: { trigger: "#invitado-card", start: "top 85%", once: true }
+        });
+
+        tl.fromTo("#invitado-card", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" })
+          .fromTo(".invitado-hojas", { opacity: 0, scale: 0.85 }, { opacity: 0.12, scale: 1, duration: 0.9, ease: "power2.out" }, "-=0.5")
+          .fromTo("#invitado-encabezado", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, "-=0.6")
+          .fromTo("#invitado-divisor", { opacity: 0, scaleX: 0.4 }, { opacity: 1, scaleX: 1, duration: 0.6, ease: "power2.out" }, "-=0.3")
+          .fromTo("#invitado-nombre", { opacity: 0, y: 15, filter: "blur(4px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.9, ease: "power3.out", clearProps: "filter" }, "-=0.2")
+          .fromTo("#invitado-etiqueta", { opacity: 0 }, { opacity: 1, duration: 0.5 }, "-=0.3")
+          .fromTo("#invitado-pases", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.8)" }, "-=0.2")
+          .fromTo("#invitado-mensaje", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, "-=0.2");
+    }
+</script>
+

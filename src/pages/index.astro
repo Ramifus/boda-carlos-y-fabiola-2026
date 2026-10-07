@@ -9,6 +9,7 @@ import NombresFlores from '../components/NombresFlores.astro';
 import Fecha from '../components/Fecha.astro';
 import Contador from '../components/Contador.astro';
 import Pase from '../components/Pase.astro';
+import Invitados from '../components/Invitados.astro';
 import Nombres from '../components/Nombres.astro';
 import DireccionIglesia from '../components/DireccionIglesia.astro';
 import DireccionRecepcion from '../components/DireccionRecepcion.astro';
@@ -22,10 +23,12 @@ import Galeria from '../components/Galeria.astro';
 import SugerenciaRegalo from '../components/SugerenciaRegalo.astro';
 import Pase2 from '../components/pase2.astro';
 import Reproductor from '../components/Reproductor.astro';
+import LinkNoDisponible from "../components/LinkNoDisponible.astro";
 
 ---
 
 <Layout title="Boda de Carlos & Fabiola">
+    <LinkNoDisponible />
 
 <!-- 🎊 PORTADA DE BIENVENIDA (se muestra primero) -->
 <Portada/>
@@ -34,6 +37,7 @@ import Reproductor from '../components/Reproductor.astro';
 <NombresFlores/>
 <Fecha/>
 <Contador/>
+<Invitados/>
 <!-- <Pase2/> -->
 <!-- <Pase/> -->
 <Nombres/>
